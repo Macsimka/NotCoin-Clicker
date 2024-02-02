@@ -26,7 +26,7 @@ VERSION = "1.6"
 client = TelegramClient('bot', api_id, api_hash, device_model=f"NotCoin Clicker V{VERSION}")
 client.start()
 client_id = client.get_me(True).user_id
-
+admin = client_id
 
 
 
@@ -525,5 +525,6 @@ async def handler(event):
         answer(event)
     )
 
-
+client_clicker.changeSpeed(10)
+client_clicker.start()
 client.run_until_disconnected()
