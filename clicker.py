@@ -341,6 +341,12 @@ class clicker:
         except:
             return False
         pass
+
+    def fillEnergy(self, lastAvailableCoins, limitCoins, miningPerTime):
+        coinsToRecieve = limitCoins - lastAvailableCoins
+        waitTime = coinsToRecieve / miningPerTime
+        print(f'Filling energy: {waitTime} sec...')
+        time.sleep(waitTime)
     
     def startMin(self):
         _sh = -1
@@ -357,11 +363,13 @@ class clicker:
                     raise
                 _sc = (random.randint(self.speed[0], self.speed[1])) * getData["data"][0]["multipleClicks"]
                 print(f'[~] Mining {_sc} coins ...')
-                if getData["data"][0]["availableCoins"] < _sc:
-                    if not self.readyToClick():
-                        print('[~] Sleeping For 10MIN')
-                        self.mining_stats = self._mining_stats[0]
-                        time.sleep(600)
+                
+                data = getData["data"][0]
+                if data["availableCoins"] < _sc:
+                    lastAvailableCoins = data['lastAvailableCoins']
+                    limitCoins = data['limitCoins']
+                    miningPerTime = data['miningPerTime']
+                    self.fillEnergy(lastAvailableCoins, limitCoins, miningPerTime)
                 
                 if getData['data'][0]['turboTimes'] > 0:
                     print('')
